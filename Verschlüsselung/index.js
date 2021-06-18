@@ -12,7 +12,7 @@ app.post('/rot13', jsonParser, function (req, res) {
         res.send({ message: "The given body is invalid. Schema required: { text: string }" }) 
     } else {
         const cypher = rot13(text);
-        res.send({ cypher })
+        res.send('{' + cypher + '}')
     }
 });
 
@@ -24,7 +24,7 @@ app.post("/caesar/cypher", jsonParser, function (req, res ){
         res.send({ message: "The given body is invalid. Schema required: { text: string, key: number }" }) 
     } else {
         const cypher = rot13(text, key);
-        res.send({ cypher })
+        res.send('{' + cypher + '}')
     }
 });
 
@@ -36,7 +36,7 @@ app.post("/caesar/decypher", jsonParser, function (req, res){
         res.send({ message: "The given body is invalid. Schema required: { text: string, key: number }" }) 
     } else {
         const cypher = rot13(text, 26 - key);
-        res.send({ cypher })
+        res.send('{' + cypher + '}')
     }
 
 });
@@ -55,13 +55,13 @@ app.post("/rsa/encrypt", jsonParser, function(req, res){
     const key = req.body.key;
     if ( typeof text !== 'string' || text === '' || typeof key !== "string" ) {
         res.status(400);
-        res.send({ message: "The given body is invalid. Schema required: { text: string, key: PEM }" }) 
+        res.send('{ message: "The given body is invalid. Schema required: { text: string, key: PEM }" }') 
     } else { 
     const rsaKey = new NodeRSA(key, "public");
 
     const cypher = rsaKey.encrypt(text);
 
-    res.send({cypher});
+    res.send('{' + cypher + '}');
     }
 
 
@@ -72,13 +72,13 @@ app.post("/rsa/decrypt", jsonParser, function(req,res){
     const key = req.body.key;
     if ( typeof text !== 'string' || text === '' || typeof key !== "string" ) {
         res.status(400);
-        res.send({ message: "The given body is invalid. Schema required: { text: string, key: PEM }" }) 
+        res.send('{ message: "The given body is invalid. Schema required: { text: string, key: PEM }" }') 
     } else {
     const rsaKey = new NodeRSA(key, "private");
 
     const cypher = rsaKey.decrypt(text);
 
-    res.send({plain});
+    res.send('{' + plain + '}');
     }
 
 });
